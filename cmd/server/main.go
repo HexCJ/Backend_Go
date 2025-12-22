@@ -18,28 +18,32 @@ func main() {
 	godotenv.Load()
 
 	db := config.ConnectDB()
-	db.AutoMigrate(&models.User{})
+
+	db.AutoMigrate(
+		&models.User{},
+		&models.Profile{},
+	)
 
 	userRepo := repositories.UserRepository{DB: db}
-	userService := services.UserService{Repo: userRepo}
-	userHandler := handlers.UserHandler{Service: userService}
-
 	profileRepo := repositories.ProfileRepository{DB: db}
+
+	userService := services.UserService{Repo: userRepo}
 	profileService := services.ProfileService{Repo: profileRepo}
+
+	userHandler := handlers.UserHandler{Service: userService}
 	profileHandler := handlers.ProfileHandler{Service: profileService}
-
-	routes.RegisterRoutes(r, userHandler, profileHandler)
-
 
 	r := gin.Default()
 
 	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
+		c.JSON(200, gin.H{"message": "pong"})
 	})
 
-	routes.RegisterRoutes(r, userHandler)
+	routes.RegisterRoutes(
+		r,
+		userHandler,
+		profileHandler,
+	)
 
 	log.Println("Server running at :8081")
 	r.Run(":8081")
