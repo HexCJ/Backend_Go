@@ -5,7 +5,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterRoutes(r *gin.Engine, userHandler handlers.UserHandler) {
+func RegisterRoutes(
+	r *gin.Engine,
+	userHandler handlers.UserHandler,
+	profileHandler handlers.ProfileHandler, 
+) {
 	api := r.Group("/api")
 	{
 		users := api.Group("/users")
