@@ -1,22 +1,22 @@
-package services
+package repositories
 
 import (
 	"gin-user-api/internal/models"
-	"gin-user-api/internal/repositories"
+	"gorm.io/gorm"
 )
 
-type ProfileService struct {
-	Repo repositories.ProfileRepository
+type ProfileRepository struct {
+	DB *gorm.DB
 }
 
-func (s *ProfileService) Create(profile *models.Profile) error {
-	return s.Repo.Create(profile)
+func (r *ProfileRepository) FindByUserID(profile *models.Profile, userID uint) error {
+	return r.DB.Where("user_id = ?", userID).First(profile).Error
 }
 
-func (s *ProfileService) Update(profile *models.Profile) error {
-	return s.Repo.Update(profile)
+func (r *ProfileRepository) Create(profile *models.Profile) error {
+	return r.DB.Create(profile).Error
 }
 
-func (s *ProfileService) GetByUserID(profile *models.Profile, userID uint) error {
-	return s.Repo.FindByUserID(profile, userID)
+func (r *ProfileRepository) Update(profile *models.Profile) error {
+	return r.DB.Save(profile).Error
 }
