@@ -34,6 +34,6 @@ func main() {
 
 	routes.RegisterRoutes(r, userHandler)
 
-	log.Println("Server running at :8080")
-	r.Run(":8080")
+	log.Println("Server running at :8081")
+	r.Run(":8081")
 }
