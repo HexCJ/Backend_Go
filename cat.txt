@@ -1,0 +1,24 @@
+Alur penggunaan go gin ini : 
+Handler menerima dan memproses request HTTP, lalu meneruskannya ke Service untuk validasi dan aturan bisnis, kemudian Service meminta Repository untuk mengolah data ke database melalui Model.
+
+as laravel: 
+Handler sebagai controller
+
+Alur :
+Client (curl / frontend)
+    ↓
+Handler
+- baca request
+- bind JSON
+- validasi format
+    ↓
+Service
+- aturan bisnis
+- validasi logika
+- keputusan boleh / tidak
+    ↓
+Repository
+- query database
+- insert / update / delete
+    ↓
+Database

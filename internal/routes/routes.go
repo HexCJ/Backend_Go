@@ -1,0 +1,21 @@
+package routes
+
+import (
+	"gin-user-api/internal/handlers"
+	"github.com/gin-gonic/gin"
+)
+
+func RegisterRoutes(r *gin.Engine, userHandler handlers.UserHandler) {
+	api := r.Group("/api")
+	{
+		users := api.Group("/users")
+		{
+			users.GET("", userHandler.GetUsers)
+			users.POST("", userHandler.CreateUser)
+			users.GET("/:id", userHandler.GetUser)
+			users.PUT("/:id", userHandler.UpdateUser)
+			users.DELETE("/:id", userHandler.DeleteUser)
+		}
+	}
+}
+
