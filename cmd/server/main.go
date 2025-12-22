@@ -24,6 +24,13 @@ func main() {
 	userService := services.UserService{Repo: userRepo}
 	userHandler := handlers.UserHandler{Service: userService}
 
+	profileRepo := repositories.ProfileRepository{DB: db}
+	profileService := services.ProfileService{Repo: profileRepo}
+	profileHandler := handlers.ProfileHandler{Service: profileService}
+
+	routes.RegisterRoutes(r, userHandler, profileHandler)
+
+
 	r := gin.Default()
 
 	r.GET("/ping", func(c *gin.Context) {
