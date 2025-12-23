@@ -22,6 +22,7 @@ func main() {
 	db.AutoMigrate(
 		&models.User{},
 		&models.Profile{},
+		&models.Post{},
 	)
 
 	userRepo := repositories.UserRepository{DB: db}
