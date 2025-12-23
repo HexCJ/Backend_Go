@@ -13,6 +13,12 @@ type UserHandler struct {
 	Service services.UserService
 }
 
+func NewUserHandler(db *gorm.DB) UserHandler {
+	repo := repositories.UserRepository{DB: db}
+	service := services.UserService{Repo: repo}
+	return UserHandler{Service: service}
+}
+
 func (h *UserHandler) GetUsers(c *gin.Context) {
 	var users []models.User
 	if err := h.Service.GetAll(&users); err != nil {

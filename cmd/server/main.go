@@ -25,14 +25,9 @@ func main() {
 		&models.Post{},
 	)
 
-	userRepo := repositories.UserRepository{DB: db}
-	profileRepo := repositories.ProfileRepository{DB: db}
+	userHandler := handlers.NewUserHandler(db)
+	profileHandler := handlers.NewProfileHandler(db)
 
-	userService := services.UserService{Repo: userRepo}
-	profileService := services.ProfileService{Repo: profileRepo}
-
-	userHandler := handlers.UserHandler{Service: userService}
-	profileHandler := handlers.ProfileHandler{Service: profileService}
 
 	r := gin.Default()
 

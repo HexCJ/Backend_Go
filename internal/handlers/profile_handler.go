@@ -13,7 +13,12 @@ type ProfileHandler struct {
 	Service services.ProfileService
 }
 
-// POST /api/users/:id/profile
+func NewProfileHandler(db *gorm.DB) ProfileHandler {
+	repo := repositories.ProfileRepository{DB: db}
+	service := services.ProfileService{Repo: repo}
+	return ProfileHandler{Service: service}
+}
+
 func (h *ProfileHandler) CreateProfile(c *gin.Context) {
 	userID, _ := strconv.Atoi(c.Param("id"))
 
@@ -26,7 +31,6 @@ func (h *ProfileHandler) CreateProfile(c *gin.Context) {
 	c.JSON(http.StatusCreated, profile)
 }
 
-// PUT /api/users/:id/profile
 func (h *ProfileHandler) UpdateProfile(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
