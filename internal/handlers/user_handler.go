@@ -6,7 +6,10 @@ import (
 
 	"gin-user-api/internal/models"
 	"gin-user-api/internal/services"
+	"gin-user-api/internal/repositories" 
 	"github.com/gin-gonic/gin"
+
+	"gorm.io/gorm"
 )
 
 type UserHandler struct {

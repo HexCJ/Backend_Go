@@ -9,6 +9,7 @@ func RegisterRoutes(
 	r *gin.Engine,
 	userHandler handlers.UserHandler,
 	profileHandler handlers.ProfileHandler, 
+	postHandler handlers.PostHandler, 
 ) {
 	api := r.Group("/api")
 	{
@@ -22,6 +23,12 @@ func RegisterRoutes(
 
 			users.POST("/:id/profile", profileHandler.CreateProfile)
 			users.PUT("/:id/profile", profileHandler.UpdateProfile)
+
+			users.GET("/:id/posts", postHandler.GetPosts)
+			users.GET("/:id/posts/:post_id", postHandler.GetPost)
+			users.POST("/:id/posts", postHandler.CreatePost)
+			users.PUT("/:id/posts/:post_id", postHandler.UpdatePost)
+			users.DELETE("/:id/posts/:post_id", postHandler.DeletePost)
 		}
 	}
 }
