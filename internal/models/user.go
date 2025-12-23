@@ -7,7 +7,7 @@ type User struct {
 	Name      string    `json:"name"`
 	Email     string    `json:"email" gorm:"unique"`
 
-	Profile Profile `json:"profile" gorm:"foreignKey:UserID"`
+	Profile Profile `json:"profile" gorm:"foreignKey:UserID;references:ID"`
 	Posts   []Post  `json:"posts" gorm:"foreignKey:UserID"`
 
 	CreatedAt time.Time `json:"created_at"`

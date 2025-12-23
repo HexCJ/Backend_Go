@@ -28,13 +28,32 @@ func (h *ProfileHandler) CreateProfile(c *gin.Context) {
 
 // PUT /api/users/:id/profile
 func (h *ProfileHandler) UpdateProfile(c *gin.Context) {
-	userID, _ := strconv.Atoi(c.Param("id"))
-
+	userID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+		return
+	}
 	var profile models.Profile
-	h.Service.GetByUserID(&profile, uint(userID))
+	if err := h.Service.GetByUserID(&profile, uint(userID)); err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Profile not found"})
+		return
+	}
+	var input struct {
+		Phone   string `json:"phone"`
+		Address string `json:"address"`
+	}
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	profile.Phone = input.Phone
+	profile.Address = input.Address
 
-	c.ShouldBindJSON(&profile)
-	h.Service.Update(&profile)
+	if err := h.Service.Update(&profile); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update profile"})
+		return
+	}
 
 	c.JSON(http.StatusOK, profile)
 }
+

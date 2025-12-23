@@ -10,7 +10,7 @@ type UserRepository struct {
 }
 
 func (r *UserRepository) FindAll(users *[]models.User) error {
-	return r.DB.Find(users).Error
+	return r.DB.Preload("Profile").Preload("Posts").Find(users).Error
 }
 
 func (r *UserRepository) FindByID(user *models.User, id uint) error {
